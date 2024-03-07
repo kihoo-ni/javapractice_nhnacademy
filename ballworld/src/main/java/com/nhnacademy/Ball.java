@@ -1,14 +1,15 @@
 package com.nhnacademy;
 
+import java.awt.Rectangle;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class Ball {
+    static int getRegionCallCount = 0;
     static int count = 0;
     int id = ++count;
-    int x;
-    int y;
-    int radius;
+    Rectangle region;
     Logger logger = LogManager.getLogger(this.getClass().getSimpleName());
 
     public Ball(int x, int y, int radius) {
@@ -23,10 +24,7 @@ public class Ball {
             throw new IllegalArgumentException("볼이 정수 공간을 벗어납니다.");
         }
 
-        this.x = x;
-        this.y = y;
-        this.radius = radius;
-
+        region = new Rectangle(x - radius, y - radius, 2 * radius, 2 * radius);
         logger.trace("Ball created : {}, {}, {}", x, y, radius);
     }
 
@@ -35,23 +33,27 @@ public class Ball {
     }
 
     public int getX() {
-        return x;
+        return (int) region.getCenterX();
     }
 
     public int getY() {
-        return y;
+        return (int) region.getCenterY();
     }
 
     void setX(int x) {
-        this.x = x;
+        region.setLocation(x - getRadius(), getY() - getRadius());
     }
 
     void setY(int y) {
-        this.y = y;
+        region.setLocation(getX() - getRadius(), y - getRadius());
     }
 
     public int getRadius() {
-        return radius;
+        return (int) region.getWidth() / 2;
+    }
+
+    public Rectangle getRegion() {
+        return region;
     }
 
     @Override

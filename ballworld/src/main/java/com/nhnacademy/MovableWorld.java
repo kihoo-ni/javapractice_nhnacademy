@@ -1,13 +1,9 @@
 package com.nhnacademy;
 
 public class MovableWorld extends World {
-    static final int DEFAULT_DT=10;
+    static final int DEFAULT_DT = 10;
     int moveCount;
     int maxMoveCount = 0;
-
-    public void reset() {
-        moveCount = 0;
-    }
     int dt = DEFAULT_DT;
 
     public void setDT(int dt) {
@@ -21,12 +17,27 @@ public class MovableWorld extends World {
         return dt;
     }
 
+    public void reset() {
+        moveCount = 0;
+    }
+
     public void move() {
         if ((getMaxMoveCount() == 0) || (getMoveCount() < getMaxMoveCount())) {
             for (int i = 0; i < getCount(); i++) {
                 Ball ball = get(i);
                 if (ball instanceof MovableBall) {
                     ((MovableBall) ball).move();
+
+                    if (ball instanceof BoundedBall) {
+                        for (int j = 0; j < getCount(); j++) {
+                            Ball otherBall = get(j);
+
+                            if ((ball != otherBall) && (ball.getRegion().intersects(otherBall.getRegion()))) {
+                                ((BoundedBall) ball).bounce(otherBall);
+                                logger.info("ball({})와 ball({})이 충돌하였습니다.", ball.getId(), otherBall.getId());
+                            }
+                        }
+                    }
                 }
             }
 
