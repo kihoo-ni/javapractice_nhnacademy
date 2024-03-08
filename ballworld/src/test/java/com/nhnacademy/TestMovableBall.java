@@ -1,4 +1,3 @@
-
 package com.nhnacademy;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -21,8 +20,7 @@ public class TestMovableBall {
         assertDoesNotThrow(() -> {
             MovableBall ball = new MovableBall(1, 1, 1, Color.RED);
 
-            assertEquals(MovableBall.DEFAULT_DX, ball.getDX());
-            assertEquals(MovableBall.DEFAULT_DY, ball.getDY());
+            assertEquals(MovableBall.DEFAULT_MOTION, ball.getMotion());
         });
     }
 
@@ -32,10 +30,9 @@ public class TestMovableBall {
         assertDoesNotThrow(() -> {
             MovableBall ball = new MovableBall(x, y, radius, Color.RED);
 
-            ball.setDX(dx);
-            ball.setDY(dy);
-            assertEquals(dx, ball.getDX());
-            assertEquals(dy, ball.getDY());
+            ball.setMotion(dx, dy);
+            assertEquals(dx, ball.getMotion().getDX());
+            assertEquals(dy, ball.getMotion().getDY());
         });
     }
 
@@ -60,8 +57,7 @@ public class TestMovableBall {
         assertDoesNotThrow(() -> {
             MovableBall ball = new MovableBall(x, y, radius, Color.BLUE);
 
-            ball.setDX(dx);
-            ball.setDY(dy);
+            ball.setMotion(dx, dy);
 
             int currentX = x;
             int currentY = y;
@@ -91,13 +87,11 @@ public class TestMovableBall {
     static int startY = 0;
     static int deltaX = 10;
     static int deltaY = 100;
-    static MovableBall ball =new MovableBall(startX, startY, 10, Color.RED);
+    static MovableBall ball = new MovableBall(startX, startY, 10, Color.RED);
 
     @BeforeAll
     static void beforRepeatedMove() {
-        ball.setDX(deltaX);
-        ball.setDY(deltaY);
-        
+        ball.setMotion(deltaX, deltaY);
     }
 
     @RepeatedTest(10)
@@ -105,5 +99,5 @@ public class TestMovableBall {
         ball.move();
         assertEquals(startX + deltaX * repetitionInfo.getCurrentRepetition(), ball.getX());
         assertEquals(startY + deltaY * repetitionInfo.getCurrentRepetition(), ball.getY());
-    } 
+    }
 }
