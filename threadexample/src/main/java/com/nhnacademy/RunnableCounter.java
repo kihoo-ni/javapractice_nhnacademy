@@ -7,11 +7,20 @@ public class RunnableCounter implements Runnable {
     int maxCount = 10;
     int start = 0;
     int count=0;
+    Thread thread;
+    
+
     public RunnableCounter(String name, int maxCount) {
         this.name = name;
         this.maxCount = maxCount;
         this.count=0;
     }
+
+    public RunnableCounter(ThreadGroup group, String name, int maxCount) {
+        thread = new Thread(group, this, name);
+        this.maxCount = maxCount;
+    }
+    
 
     public int getCount(){
         return count;
